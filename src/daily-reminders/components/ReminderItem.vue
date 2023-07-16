@@ -1,7 +1,7 @@
 <template>
   <div class="reminder-item">
     <MDBCard :bg="cardBg">
-      <MDBCardBody>
+      <MDBCardBody :class="cardTextClass">
         <MDBCardTitle>Card title</MDBCardTitle>
         <MDBCardText>
           Some quick example text to build on the card title and make up the bulk of the card's
@@ -50,6 +50,9 @@ export default {
   computed: {
     cardBg() {
       return this.enabled ? '' : 'light'
+    },
+    cardTextClass() {
+      return this.enabled ? '' : 'reminder-item-disabled-text'
     }
   }
 }
@@ -57,6 +60,9 @@ export default {
 <style scoped>
 .reminder-item {
   margin-top: 1em;
+}
+.reminder-item-disabled-text {
+  text-decoration: line-through;
 }
 .actions-section {
   text-align: right;
