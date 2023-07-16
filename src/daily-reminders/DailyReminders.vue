@@ -1,3 +1,13 @@
 <template>
-  <h2>Hello World</h2>
+  <div>
+    <RemindersList />
+  </div>
 </template>
+<script>
+import RemindersList from './components/RemindersList.vue'
+export default {
+  components: {
+    RemindersList
+  }
+}
+</script>
