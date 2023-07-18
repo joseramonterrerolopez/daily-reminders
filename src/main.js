@@ -1,5 +1,6 @@
 import 'mdb-vue-ui-kit/css/mdb.min.css'
 import './_global/assets/app.css'
+import './_global/assets/forms.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

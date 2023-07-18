@@ -2,7 +2,7 @@
   <MDBContainer fluid>
     <MDBRow>
       <MDBCol md="3">
-        <ReminderItem />
+        <ReminderItem @deleteReminder="$emit('deleteReminder')" />
       </MDBCol>
       <MDBCol md="3">
         <ReminderItem />

@@ -1,20 +1,46 @@
 <template>
   <div class="daily-reminders">
     <CurrentDayHeader />
-    <RemindersList />
-    <CreateBtn class="create-btn" />
+    <RemindersList @deleteReminder="changeDeleteReminderFormVisibility(true)" />
+    <CreateBtn @click="changeCreateReminderFormVisibility(true)" class="create-btn" />
+    <CreateReminderForm
+      v-if="createReminderFormVisible"
+      @closeReminderForm="changeCreateReminderFormVisibility(false)"
+    />
+    <DeleteReminderForm
+      v-if="deleteReminderFormVisible"
+      @closeDeleteForm="changeDeleteReminderFormVisibility(false)"
+      @cancelDeleteForm="changeDeleteReminderFormVisibility(false)"
+    />
   </div>
 </template>
 <script>
 import CurrentDayHeader from './components/CurrentDayHeader.vue'
 import RemindersList from './components/RemindersList.vue'
 import CreateBtn from './components/buttons/CreateBtn.vue'
+import CreateReminderForm from './components/forms/CreateReminderForm.vue'
+import DeleteReminderForm from './components/forms/DeleteReminderForm.vue'
 
 export default {
+  data: () =>
+    Object.assign({
+      createReminderFormVisible: false,
+      deleteReminderFormVisible: false
+    }),
+  methods: {
+    changeCreateReminderFormVisibility(visibility) {
+      this.createReminderFormVisible = visibility
+    },
+    changeDeleteReminderFormVisibility(visibility) {
+      this.deleteReminderFormVisible = visibility
+    }
+  },
   components: {
     CurrentDayHeader,
     RemindersList,
-    CreateBtn
+    CreateBtn,
+    CreateReminderForm,
+    DeleteReminderForm
   }
 }
 </script>
@@ -24,11 +50,9 @@ export default {
 }
 .create-btn {
   cursor: pointer;
-  font-size: 3.5em;
   position: fixed;
   right: 15px;
   bottom: 10px;
-  background-color: white;
   z-index: 2;
 }
 </style>

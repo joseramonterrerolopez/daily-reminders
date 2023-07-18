@@ -8,12 +8,12 @@
           content.
         </MDBCardText>
       </MDBCardBody>
-      <MDBCardFooter>
+      <MDBCardFooter v-if="showActions">
         <div class="actions-section">
           <DisableBtn v-if="enabled" class="action-btn" @click="toggleStatus" />
           <EnableBtn v-else class="action-btn" @click="toggleStatus" />
           <EditBtn class="action-btn" />
-          <DeleteBtn class="action-btn" />
+          <DeleteBtn @click="$emit('deleteReminder')" class="action-btn" />
         </div>
       </MDBCardFooter>
     </MDBCard>
@@ -27,6 +27,13 @@ import DisableBtn from './buttons/DisableBtn.vue'
 import EnableBtn from './buttons/EnableBtn.vue'
 
 export default {
+  props: {
+    showActions: {
+      required: false,
+      type: Boolean,
+      default: true
+    }
+  },
   data: () =>
     Object.assign({
       enabled: false
