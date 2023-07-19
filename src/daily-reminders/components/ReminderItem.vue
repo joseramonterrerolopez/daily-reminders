@@ -2,15 +2,14 @@
   <div class="reminder-item">
     <MDBCard :bg="cardBg">
       <MDBCardBody :class="cardTextClass">
-        <MDBCardTitle>Card title</MDBCardTitle>
+        <MDBCardTitle>{{ reminder.title }}</MDBCardTitle>
         <MDBCardText>
-          Some quick example text to build on the card title and make up the bulk of the card's
-          content.
+          {{ reminder.description }}
         </MDBCardText>
       </MDBCardBody>
       <MDBCardFooter v-if="showActions">
         <div class="actions-section">
-          <DisableBtn v-if="enabled" class="action-btn" @click="toggleStatus" />
+          <DisableBtn v-if="reminder.active" class="action-btn" @click="toggleStatus" />
           <EnableBtn v-else class="action-btn" @click="toggleStatus" />
           <EditBtn class="action-btn" />
           <DeleteBtn @click="$emit('deleteReminder')" class="action-btn" />
@@ -32,12 +31,12 @@ export default {
       required: false,
       type: Boolean,
       default: true
+    },
+    reminder: {
+      required: true,
+      type: Object
     }
   },
-  data: () =>
-    Object.assign({
-      enabled: false
-    }),
   components: {
     MDBCard,
     MDBCardBody,
@@ -51,15 +50,15 @@ export default {
   },
   methods: {
     toggleStatus() {
-      this.enabled = !this.enabled
+      // do something
     }
   },
   computed: {
     cardBg() {
-      return this.enabled ? '' : 'light'
+      return this.reminder.active ? '' : 'light'
     },
     cardTextClass() {
-      return this.enabled ? '' : 'reminder-item-disabled-text'
+      return this.reminder.active ? '' : 'reminder-item-disabled-text'
     }
   }
 }

@@ -2,24 +2,37 @@
   <DlyModal @closeModal="$emit('closeReminderForm')">
     <template #header>Set reminder for today</template>
     <template #body>
-      <MDBInput label="Title" type="text" /><br /><br />
+      <MDBInput v-model="title" label="Title" type="text" /><br /><br />
       <div class="textarea-no-resizable">
-        <MDBTextarea label="Description (optional)" />
+        <MDBTextarea v-model="description" label="Description (optional)" />
       </div>
       <br /><br />
-      <MDBBtn class="create-btn" color="dark" rounded> Create </MDBBtn>
+      <MDBBtn @click="createReminder(title, description)" class="create-btn" color="dark" rounded>
+        Create
+      </MDBBtn>
     </template>
   </DlyModal>
 </template>
 <script>
 import { MDBInput, MDBTextarea, MDBBtn } from 'mdb-vue-ui-kit'
 import DlyModal from '@/_global/components/DlyModal.vue'
+import { useRemindersStore } from '@/daily-reminders/stores/reminders'
+import { mapActions } from 'pinia'
+
 export default {
   components: {
     MDBInput,
     MDBTextarea,
     MDBBtn,
     DlyModal
+  },
+  data: () =>
+    Object.assign({
+      title: '',
+      description: ''
+    }),
+  methods: {
+    ...mapActions(useRemindersStore, ['createReminder'])
   }
 }
 </script>

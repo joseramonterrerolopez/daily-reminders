@@ -11,10 +11,11 @@
 }
 </style>
 <script>
+import { DateTime } from 'luxon'
 export default {
   computed: {
     today() {
-      return new Date().toDateString()
+      return DateTime.now().toLocaleString()
     }
   }
 }
