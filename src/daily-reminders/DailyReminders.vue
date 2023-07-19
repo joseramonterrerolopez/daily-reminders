@@ -1,7 +1,7 @@
 <template>
   <div class="daily-reminders">
     <CurrentDayHeader />
-    <RemindersList @deleteReminder="changeDeleteReminderFormVisibility(true)" />
+    <RemindersList @deleteReminder="deleteReminder" />
     <CreateBtn @click="changeCreateReminderFormVisibility(true)" class="create-btn" />
     <CreateReminderForm
       v-if="createReminderFormVisible"
@@ -9,6 +9,7 @@
     />
     <DeleteReminderForm
       v-if="deleteReminderFormVisible"
+      :reminder="reminderToDelete"
       @closeDeleteForm="changeDeleteReminderFormVisibility(false)"
       @cancelDeleteForm="changeDeleteReminderFormVisibility(false)"
     />
@@ -20,19 +21,30 @@ import RemindersList from './components/RemindersList.vue'
 import CreateBtn from './components/buttons/CreateBtn.vue'
 import CreateReminderForm from './components/forms/CreateReminderForm.vue'
 import DeleteReminderForm from './components/forms/DeleteReminderForm.vue'
+import { useRemindersStore } from '@/daily-reminders/stores/reminders'
+import { mapActions } from 'pinia'
 
 export default {
   data: () =>
     Object.assign({
       createReminderFormVisible: false,
-      deleteReminderFormVisible: false
+      deleteReminderFormVisible: false,
+      reminderToDelete: null
     }),
+  mounted() {
+    this.initReminders()
+  },
   methods: {
+    ...mapActions(useRemindersStore, ['initReminders']),
     changeCreateReminderFormVisibility(visibility) {
       this.createReminderFormVisible = visibility
     },
     changeDeleteReminderFormVisibility(visibility) {
       this.deleteReminderFormVisible = visibility
+    },
+    deleteReminder(reminder) {
+      this.reminderToDelete = reminder
+      this.changeDeleteReminderFormVisibility(true)
     }
   },
   components: {

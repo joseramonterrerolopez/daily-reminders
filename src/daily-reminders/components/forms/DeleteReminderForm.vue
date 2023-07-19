@@ -2,10 +2,12 @@
   <DlyModal @closeModal="$emit('closeDeleteForm')">
     <template #header>Do you want to delete this reminder?</template>
     <template #body>
-      <ReminderItem :show-actions="false" />
+      <ReminderItem :show-actions="false" :reminder="reminder" />
       <br /><br />
       <MDBBtn class="confirm-btn" color="dark" rounded> Confirm </MDBBtn>
-      <MDBBtn @click="$emit('cancelDeleteForm')" class="cancel-btn" outline="dark" rounded> Cancel </MDBBtn>
+      <MDBBtn @click="$emit('cancelDeleteForm')" class="cancel-btn" outline="dark" rounded>
+        Cancel
+      </MDBBtn>
     </template>
   </DlyModal>
 </template>
@@ -14,6 +16,12 @@ import { MDBBtn } from 'mdb-vue-ui-kit'
 import DlyModal from '@/_global/components/DlyModal.vue'
 import ReminderItem from '@/daily-reminders/components/ReminderItem.vue'
 export default {
+  props: {
+    reminder: {
+      required: true,
+      type: Object
+    }
+  },
   components: {
     MDBBtn,
     DlyModal,
