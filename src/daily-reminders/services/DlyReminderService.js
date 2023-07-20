@@ -21,4 +21,13 @@ export default class DlyReminderService {
   getAll() {
     return this.dlyReminderRepository.getAll()
   }
+
+  toggleStatus(reminder) {
+    return this.dlyReminderRepository.toggleStatus(reminder)
+  }
+
+  remove(reminder) {
+    this.dlyReminderRepository.delete(reminder.id)
+    return reminder
+  }
 }

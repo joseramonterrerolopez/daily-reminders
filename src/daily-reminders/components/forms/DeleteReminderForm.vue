@@ -14,6 +14,7 @@ import { MDBBtn } from 'mdb-vue-ui-kit'
 import DlyModal from '@/_global/components/DlyModal.vue'
 import ReminderItem from '@/daily-reminders/components/ReminderItem.vue'
 import { useDeleteReminderFormStore } from '@/daily-reminders/stores/forms'
+import { useRemindersStore } from '@/daily-reminders/stores/reminders'
 import { mapActions, mapState } from 'pinia'
 
 export default {
@@ -27,7 +28,9 @@ export default {
   },
   methods: {
     ...mapActions(useDeleteReminderFormStore, ['close']),
+    ...mapActions(useRemindersStore, ['removeReminder']),
     onDeleteReminder() {
+      this.removeReminder(this.getReminderToDelete)
       this.close()
     }
   }
