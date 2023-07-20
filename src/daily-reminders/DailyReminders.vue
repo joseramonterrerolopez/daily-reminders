@@ -1,7 +1,7 @@
 <template>
   <div class="daily-reminders">
     <CurrentDayHeader />
-    <RemindersList @deleteReminder="deleteReminder" />
+    <RemindersList />
     <CreateBtn @click="openCreateReminderForm" class="create-btn" />
     <CreateReminderForm v-if="isCreateReminderFormVisible" />
     <DeleteReminderForm v-if="isDeleteReminderFormVisible" />
@@ -25,11 +25,7 @@ export default {
     ...mapActions(useRemindersStore, ['initReminders']),
     ...mapActions(useCreateReminderFormStore, {
       openCreateReminderForm: 'open'
-    }),
-    deleteReminder(reminder) {
-      this.reminderToDelete = reminder
-      this.changeDeleteReminderFormVisibility(true)
-    }
+    })
   },
   computed: {
     ...mapState(useCreateReminderFormStore, {
