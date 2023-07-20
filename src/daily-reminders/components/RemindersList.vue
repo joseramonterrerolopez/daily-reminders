@@ -2,7 +2,7 @@
   <MDBContainer fluid>
     <MDBRow>
       <MDBCol v-for="reminder in getAllReminders" :key="reminder.id" md="3">
-        <ReminderItem :reminder="reminder" @deleteReminder="$emit('deleteReminder', reminder)" />
+        <ReminderItem :reminder="reminder" />
       </MDBCol>
     </MDBRow>
   </MDBContainer>

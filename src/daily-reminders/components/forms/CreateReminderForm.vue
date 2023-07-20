@@ -1,5 +1,5 @@
 <template>
-  <DlyModal @closeModal="$emit('closeReminderForm')">
+  <DlyModal @closeModal="close">
     <template #header>Set reminder for today</template>
     <template #body>
       <MDBInput v-model="title" label="Title" type="text" /><br /><br />
@@ -7,9 +7,7 @@
         <MDBTextarea v-model="description" label="Description (optional)" />
       </div>
       <br /><br />
-      <MDBBtn @click="createReminder(title, description)" class="create-btn" color="dark" rounded>
-        Create
-      </MDBBtn>
+      <MDBBtn @click="onCreateReminder" class="create-btn" color="dark" rounded> Create </MDBBtn>
     </template>
   </DlyModal>
 </template>
@@ -17,6 +15,7 @@
 import { MDBInput, MDBTextarea, MDBBtn } from 'mdb-vue-ui-kit'
 import DlyModal from '@/_global/components/DlyModal.vue'
 import { useRemindersStore } from '@/daily-reminders/stores/reminders'
+import { useCreateReminderFormStore } from '@/daily-reminders/stores/forms'
 import { mapActions } from 'pinia'
 
 export default {
@@ -32,7 +31,12 @@ export default {
       description: ''
     }),
   methods: {
-    ...mapActions(useRemindersStore, ['createReminder'])
+    ...mapActions(useRemindersStore, ['createReminder']),
+    ...mapActions(useCreateReminderFormStore, ['close']),
+    onCreateReminder() {
+      this.createReminder(this.title, this.description)
+      this.close()
+    }
   }
 }
 </script>

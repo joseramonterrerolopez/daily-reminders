@@ -12,7 +12,7 @@
           <DisableBtn v-if="reminder.active" class="action-btn" @click="toggleStatus" />
           <EnableBtn v-else class="action-btn" @click="toggleStatus" />
           <EditBtn class="action-btn" />
-          <DeleteBtn @click="$emit('deleteReminder')" class="action-btn" />
+          <DeleteBtn @click="onDeleteReminder" class="action-btn" />
         </div>
       </MDBCardFooter>
     </MDBCard>
@@ -24,6 +24,8 @@ import EditBtn from './buttons/EditBtn.vue'
 import DeleteBtn from './buttons/DeleteBtn.vue'
 import DisableBtn from './buttons/DisableBtn.vue'
 import EnableBtn from './buttons/EnableBtn.vue'
+import { useDeleteReminderFormStore } from '@/daily-reminders/stores/forms'
+import { mapActions } from 'pinia'
 
 export default {
   props: {
@@ -49,8 +51,16 @@ export default {
     EnableBtn
   },
   methods: {
+    ...mapActions(useDeleteReminderFormStore, {
+      openDeleteReminderForm: 'open',
+      setReminderToDelete: 'setReminderToDelete'
+    }),
     toggleStatus() {
       // do something
+    },
+    onDeleteReminder() {
+      this.setReminderToDelete(this.reminder)
+      this.openDeleteReminderForm()
     }
   },
   computed: {
