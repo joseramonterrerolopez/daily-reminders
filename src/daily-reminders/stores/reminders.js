@@ -10,17 +10,11 @@ export const useRemindersStore = defineStore('reminders', {
   }),
   actions: {
     initReminders() {
-      return new Promise((resolve) => {
-        this.reminderCollection = dlyReminderService.getAll()
-        resolve('ok')
-      })
+      this.reminderCollection = dlyReminderService.getAll()
     },
     createReminder(title, description) {
-      return new Promise((resolve) => {
-        const reminder = dlyReminderService.create(title, description)
-        this.reminderCollection[reminder.id] = reminder
-        resolve('ok')
-      })
+      const reminder = dlyReminderService.create(title, description)
+      this.reminderCollection[reminder.id] = reminder
     }
   },
   getters: {

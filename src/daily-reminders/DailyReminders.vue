@@ -2,17 +2,9 @@
   <div class="daily-reminders">
     <CurrentDayHeader />
     <RemindersList @deleteReminder="deleteReminder" />
-    <CreateBtn @click="changeCreateReminderFormVisibility(true)" class="create-btn" />
-    <CreateReminderForm
-      v-if="createReminderFormVisible"
-      @closeReminderForm="changeCreateReminderFormVisibility(false)"
-    />
-    <DeleteReminderForm
-      v-if="deleteReminderFormVisible"
-      :reminder="reminderToDelete"
-      @closeDeleteForm="changeDeleteReminderFormVisibility(false)"
-      @cancelDeleteForm="changeDeleteReminderFormVisibility(false)"
-    />
+    <CreateBtn @click="openCreateReminderForm" class="create-btn" />
+    <CreateReminderForm v-if="isCreateReminderFormVisible" />
+    <DeleteReminderForm v-if="isDeleteReminderFormVisible" />
   </div>
 </template>
 <script>
@@ -21,31 +13,31 @@ import RemindersList from './components/RemindersList.vue'
 import CreateBtn from './components/buttons/CreateBtn.vue'
 import CreateReminderForm from './components/forms/CreateReminderForm.vue'
 import DeleteReminderForm from './components/forms/DeleteReminderForm.vue'
-import { useRemindersStore } from '@/daily-reminders/stores/reminders'
-import { mapActions } from 'pinia'
+import { useRemindersStore } from './stores/reminders'
+import { useCreateReminderFormStore, useDeleteReminderFormStore } from './stores/forms'
+import { mapActions, mapState } from 'pinia'
 
 export default {
-  data: () =>
-    Object.assign({
-      createReminderFormVisible: false,
-      deleteReminderFormVisible: false,
-      reminderToDelete: null
-    }),
   mounted() {
     this.initReminders()
   },
   methods: {
     ...mapActions(useRemindersStore, ['initReminders']),
-    changeCreateReminderFormVisibility(visibility) {
-      this.createReminderFormVisible = visibility
-    },
-    changeDeleteReminderFormVisibility(visibility) {
-      this.deleteReminderFormVisible = visibility
-    },
+    ...mapActions(useCreateReminderFormStore, {
+      openCreateReminderForm: 'open'
+    }),
     deleteReminder(reminder) {
       this.reminderToDelete = reminder
       this.changeDeleteReminderFormVisibility(true)
     }
+  },
+  computed: {
+    ...mapState(useCreateReminderFormStore, {
+      isCreateReminderFormVisible: 'isVisible'
+    }),
+    ...mapState(useDeleteReminderFormStore, {
+      isDeleteReminderFormVisible: 'isVisible'
+    })
   },
   components: {
     CurrentDayHeader,
