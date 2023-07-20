@@ -15,6 +15,14 @@ export const useRemindersStore = defineStore('reminders', {
     createReminder(title, description) {
       const reminder = dlyReminderService.create(title, description)
       this.reminderCollection[reminder.id] = reminder
+    },
+    toggleReminderStatus(reminder) {
+      const updatedReminder = dlyReminderService.toggleStatus(reminder)
+      this.reminderCollection[updatedReminder.id] = updatedReminder
+    },
+    removeReminder(reminder) {
+      const reminderToDelete = dlyReminderService.remove(reminder)
+      delete this.reminderCollection[reminderToDelete.id]
     }
   },
   getters: {
