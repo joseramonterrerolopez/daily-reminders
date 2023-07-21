@@ -1,7 +1,7 @@
 <template>
   <MDBContainer fluid>
     <MDBRow>
-      <MDBCol v-for="reminder in getAllReminders" :key="reminder.id" md="3">
+      <MDBCol v-for="reminder in reminderCollection" :key="reminder.id" md="3">
         <ReminderItem :reminder="reminder" />
       </MDBCol>
     </MDBRow>
@@ -21,7 +21,7 @@ export default {
     MDBContainer
   },
   computed: {
-    ...mapState(useRemindersStore, ['getAllReminders'])
+    ...mapState(useRemindersStore, ['reminderCollection'])
   }
 }
 </script>

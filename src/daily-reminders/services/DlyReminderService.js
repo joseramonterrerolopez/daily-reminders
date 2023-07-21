@@ -1,21 +1,22 @@
 import { DateTime } from 'luxon'
+import { cloneDeep } from 'lodash'
 
 export default class DlyReminderService {
   constructor(dlyReminderRepository) {
     this.dlyReminderRepository = dlyReminderRepository
   }
 
-  create(title, description) {
-    const reminder = {
+  create(reminder) {
+    const newReminder = {
       id: DateTime.now().toUnixInteger(),
-      title: title,
-      description: description,
+      title: reminder.title,
+      description: reminder.description,
       created_at: DateTime.now().toISO(),
       expires_on: DateTime.now().plus({ days: 1 }).toISODate(),
       active: true
     }
-    this.dlyReminderRepository.create(reminder)
-    return reminder
+    this.dlyReminderRepository.create(newReminder)
+    return newReminder
   }
 
   getAll() {
@@ -23,7 +24,10 @@ export default class DlyReminderService {
   }
 
   toggleStatus(reminder) {
-    return this.dlyReminderRepository.toggleStatus(reminder)
+    const reminderToUpdate = cloneDeep(reminder)
+    reminderToUpdate.active = !reminderToUpdate.active
+    this.dlyReminderRepository.update(reminderToUpdate)
+    return reminderToUpdate
   }
 
   remove(reminder) {
