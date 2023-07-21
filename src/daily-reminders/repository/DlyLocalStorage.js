@@ -18,22 +18,15 @@ export default class DlyLocalStorage {
     return this._decode(localStorage.getItem(this._fullDlyStorageKey()))
   }
 
-  toggleStatus(reminder) {
-    const reminderToUpdate = cloneDeep(reminder)
-    reminderToUpdate.active = !reminderToUpdate.active
-    this._overwrite(reminderToUpdate)
-    return reminderToUpdate
+  update(reminder) {
+    this.delete(reminder.id)
+    this.create(reminder)
   }
 
   delete(id) {
     const reminders = this.getAll()
     delete reminders[id]
     localStorage.setItem(this._fullDlyStorageKey(), this._encode(reminders))
-  }
-
-  _overwrite(reminder) {
-    this.delete(reminder.id)
-    this.create(reminder)
   }
 
   _initStorageIfNotExists() {

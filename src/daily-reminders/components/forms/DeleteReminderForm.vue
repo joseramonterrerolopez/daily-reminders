@@ -2,7 +2,7 @@
   <DlyModal @closeModal="close">
     <template #header>Do you want to delete this reminder?</template>
     <template #body>
-      <ReminderItem :show-actions="false" :reminder="getReminderToDelete" />
+      <ReminderItem :show-actions="false" :reminder="reminderToDelete" />
       <br /><br />
       <MDBBtn @click="onDeleteReminder" class="confirm-btn" color="dark" rounded> Confirm </MDBBtn>
       <MDBBtn @click="close" class="cancel-btn" outline="dark" rounded> Cancel </MDBBtn>
@@ -24,13 +24,13 @@ export default {
     ReminderItem
   },
   computed: {
-    ...mapState(useDeleteReminderFormStore, ['getReminderToDelete'])
+    ...mapState(useDeleteReminderFormStore, ['reminderToDelete'])
   },
   methods: {
     ...mapActions(useDeleteReminderFormStore, ['close']),
     ...mapActions(useRemindersStore, ['removeReminder']),
     onDeleteReminder() {
-      this.removeReminder(this.getReminderToDelete)
+      this.removeReminder(this.reminderToDelete)
       this.close()
     }
   }
