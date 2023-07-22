@@ -1,5 +1,3 @@
-import { cloneDeep } from 'lodash'
-
 export default class DlyLocalStorage {
   static dlyStorageKey = '__dly__reminders'
   static version = 'dev'
