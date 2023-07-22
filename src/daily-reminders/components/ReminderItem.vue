@@ -6,6 +6,9 @@
         <MDBCardText>
           {{ reminder.description }}
         </MDBCardText>
+        <MDBCardText>
+          <em>Created on {{ createdOn }}</em>
+        </MDBCardText>
       </MDBCardBody>
       <MDBCardFooter v-if="showActions">
         <div class="actions-section">
@@ -34,6 +37,7 @@ import {
 } from '@/daily-reminders/stores/forms'
 import { useRemindersStore } from '@/daily-reminders/stores/reminders'
 import { mapActions } from 'pinia'
+import { DateTime } from 'luxon'
 
 export default {
   props: {
@@ -83,6 +87,9 @@ export default {
     },
     cardTextClass() {
       return this.reminder.active ? '' : 'reminder-item-disabled-text'
+    },
+    createdOn() {
+      return DateTime.fromISO(this.reminder.created_at).toLocaleString()
     }
   }
 }
