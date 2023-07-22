@@ -2,9 +2,9 @@
   <DlyModal @closeModal="close">
     <template #header>Set reminder for today</template>
     <template #body>
-      <MDBInput @blur="updateField('txtTitle', $event.target._value || '')" label="Title" type="text" /><br /><br />
+      <MDBInput v-model="formCreate.title" label="Title" type="text" /><br /><br />
       <div class="textarea-no-resizable">
-        <MDBTextarea @blur="updateField('txtDescription', $event.target._value || '')" label="Description (optional)" />
+        <MDBTextarea v-model="formCreate.description" label="Description (optional)" />
       </div>
       <br /><br />
       <MDBBtn @click="onCreateReminder" class="create-btn" color="dark" rounded> Create </MDBBtn>
@@ -25,16 +25,19 @@ export default {
     MDBBtn,
     DlyModal
   },
+  mounted() {
+    this.clearReminderForm()
+  },
   methods: {
     ...mapActions(useRemindersStore, ['createReminder']),
-    ...mapActions(useCreateReminderFormStore, ['close', 'updateField']),
+    ...mapActions(useCreateReminderFormStore, ['close', 'clearReminderForm']),
     onCreateReminder() {
-      this.createReminder(this.txtTitle, this.txtDescription)
+      this.createReminder(this.formCreate.title, this.formCreate.description)
       this.close()
     }
   },
   computed: {
-    ...mapState(useCreateReminderFormStore, ['txtTitle', 'txtDescription'])
+    ...mapState(useCreateReminderFormStore, ['formCreate'])
   }
 }
 </script>

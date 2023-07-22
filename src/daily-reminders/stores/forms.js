@@ -3,8 +3,10 @@ import { defineStore } from 'pinia'
 export const useCreateReminderFormStore = defineStore('createReminderForm', {
   state: () => ({
     visible: false,
-    txtTitle: '',
-    txtDescription: ''
+    formCreate: {
+      title: '',
+      description: ''
+    }
   }),
   actions: {
     open() {
@@ -13,13 +15,38 @@ export const useCreateReminderFormStore = defineStore('createReminderForm', {
     close() {
       this.visible = false
     },
-    updateField(fieldName, value) {
-      if (fieldName === 'txtTitle') {
-        this.txtTitle = value
-      }
-      if (fieldName === 'txtDescription') {
-        this.txtDescription = value
-      }
+    clearReminderForm() {
+      this.formCreate.title = ''
+      this.formCreate.description = ''
+    }
+  },
+  getters: {
+    isVisible() {
+      return this.visible
+    }
+  }
+})
+
+export const useEditReminderFormStore = defineStore('editReminderForm', {
+  state: () => ({
+    visible: false,
+    formEdit: {
+      title: '',
+      description: ''
+    },
+    reminderToEdit: null
+  }),
+  actions: {
+    open() {
+      this.visible = true
+    },
+    close() {
+      this.visible = false
+    },
+    setReminderToEdit(reminder) {
+      this.reminderToEdit = reminder
+      this.formEdit.title = reminder.title
+      this.formEdit.description = reminder.description
     }
   },
   getters: {

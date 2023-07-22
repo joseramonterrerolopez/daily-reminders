@@ -17,6 +17,10 @@ export const useRemindersStore = defineStore('reminders', {
       newReminder = dlyReminderService.create(newReminder)
       this.reminderCollection[newReminder.id] = newReminder
     },
+    modifyReminder(reminder, newFields) {
+      const updatedReminder = dlyReminderService.modify(reminder, newFields)
+      this.reminderCollection[updatedReminder.id] = updatedReminder
+    },
     toggleReminderStatus(reminder) {
       const updatedReminder = dlyReminderService.toggleStatus(reminder)
       this.reminderCollection[updatedReminder.id] = updatedReminder

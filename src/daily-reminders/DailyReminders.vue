@@ -5,6 +5,7 @@
     <CreateBtn @click="openCreateReminderForm" class="create-btn" />
     <CreateReminderForm v-if="isCreateReminderFormVisible" />
     <DeleteReminderForm v-if="isDeleteReminderFormVisible" />
+    <EditReminderForm v-if="isEditReminderFormVisible" />
   </div>
 </template>
 <script>
@@ -13,8 +14,13 @@ import RemindersList from './components/RemindersList.vue'
 import CreateBtn from './components/buttons/CreateBtn.vue'
 import CreateReminderForm from './components/forms/CreateReminderForm.vue'
 import DeleteReminderForm from './components/forms/DeleteReminderForm.vue'
+import EditReminderForm from './components/forms/EditReminderForm.vue'
 import { useRemindersStore } from './stores/reminders'
-import { useCreateReminderFormStore, useDeleteReminderFormStore } from './stores/forms'
+import {
+  useCreateReminderFormStore,
+  useDeleteReminderFormStore,
+  useEditReminderFormStore
+} from './stores/forms'
 import { mapActions, mapState } from 'pinia'
 
 export default {
@@ -33,6 +39,9 @@ export default {
     }),
     ...mapState(useDeleteReminderFormStore, {
       isDeleteReminderFormVisible: 'isVisible'
+    }),
+    ...mapState(useEditReminderFormStore, {
+      isEditReminderFormVisible: 'isVisible'
     })
   },
   components: {
@@ -40,7 +49,8 @@ export default {
     RemindersList,
     CreateBtn,
     CreateReminderForm,
-    DeleteReminderForm
+    DeleteReminderForm,
+    EditReminderForm
   }
 }
 </script>
