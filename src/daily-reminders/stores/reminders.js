@@ -6,7 +6,8 @@ const dlyReminderService = new DlyReminderService(new DlyLocalStorage())
 
 export const useRemindersStore = defineStore('reminders', {
   state: () => ({
-    reminderCollection: {}
+    reminderCollection: {},
+    filteByStatus: 'all'
   }),
   actions: {
     initReminders() {
@@ -28,6 +29,14 @@ export const useRemindersStore = defineStore('reminders', {
     removeReminder(reminder) {
       const reminderToDelete = dlyReminderService.remove(reminder)
       delete this.reminderCollection[reminderToDelete.id]
+    },
+    setFilterByStatus(status) {
+      this.filteByStatus = status
+    }
+  },
+  getters: {
+    filteredReminders() {
+      return dlyReminderService.filterByStatus(this.reminderCollection, this.filteByStatus)
     }
   }
 })
