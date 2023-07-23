@@ -33,6 +33,28 @@ export default class DlyReminderService {
     return this.dlyReminderRepository.getAll()
   }
 
+  filterByStatus(reminderCollection, sStatus) {
+    if (sStatus === 'all') {
+      return reminderCollection
+    }
+    if (sStatus === 'enabled') {
+      return this._filterByStatus(reminderCollection, true)
+    }
+    if (sStatus === 'disabled') {
+      return this._filterByStatus(reminderCollection, false)
+    }
+  }
+
+  _filterByStatus(reminderCollection, bStatus) {
+    const filtered = {}
+    for (const reminder of Object.values(reminderCollection)) {
+      if (reminder.active === bStatus) {
+        filtered[reminder.id] = reminder
+      }
+    }
+    return filtered
+  }
+
   toggleStatus(reminder) {
     reminder.active = !reminder.active
     this.dlyReminderRepository.update(reminder)
