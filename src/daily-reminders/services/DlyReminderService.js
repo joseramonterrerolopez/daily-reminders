@@ -5,13 +5,35 @@ export default class DlyReminderService {
     this.dlyReminderRepository = dlyReminderRepository
   }
 
+  autoClearReminders() {
+    if (this._isAutoClearNeeded()) {
+      this.dlyReminderRepository.deleteDisabled()
+      this.dlyReminderRepository.setLastDeletionTimestamp(this._getCurrentTimestamp())
+    }
+  }
+
+  _isAutoClearNeeded() {
+    const lastTimestamp = this.dlyReminderRepository.getLastDeletionTimestamp()
+    if (lastTimestamp === null) {
+      return true
+    }
+    const currentTimestamp = this._getCurrentTimestamp()
+    if (lastTimestamp < currentTimestamp) {
+      return true
+    }
+    return false
+  }
+
+  _getCurrentTimestamp() {
+    return Number(DateTime.now().toISODate({ format: 'basic' }))
+  }
+
   create(reminder) {
     const newReminder = {
       id: DateTime.now().toUnixInteger(),
       title: reminder.title,
       description: reminder.description,
       created_at: DateTime.now().toISO(),
-      expires_on: DateTime.now().plus({ days: 1 }).toISODate(),
       active: true
     }
     this.dlyReminderRepository.create(newReminder)
@@ -31,28 +53,6 @@ export default class DlyReminderService {
 
   getAll() {
     return this.dlyReminderRepository.getAll()
-  }
-
-  filterByStatus(reminderCollection, sStatus) {
-    if (sStatus === 'all') {
-      return reminderCollection
-    }
-    if (sStatus === 'enabled') {
-      return this._filterByStatus(reminderCollection, true)
-    }
-    if (sStatus === 'disabled') {
-      return this._filterByStatus(reminderCollection, false)
-    }
-  }
-
-  _filterByStatus(reminderCollection, bStatus) {
-    const filtered = {}
-    for (const reminder of Object.values(reminderCollection)) {
-      if (reminder.active === bStatus) {
-        filtered[reminder.id] = reminder
-      }
-    }
-    return filtered
   }
 
   toggleStatus(reminder) {

@@ -7,9 +7,12 @@ const dlyReminderService = new DlyReminderService(new DlyLocalStorage())
 export const useRemindersStore = defineStore('reminders', {
   state: () => ({
     reminderCollection: {},
-    filteByStatus: 'all'
+    filterByStatus: 'all'
   }),
   actions: {
+    autoClearReminders() {
+      dlyReminderService.autoClearReminders()
+    },
     initReminders() {
       this.reminderCollection = dlyReminderService.getAll()
     },
@@ -31,12 +34,40 @@ export const useRemindersStore = defineStore('reminders', {
       delete this.reminderCollection[reminderToDelete.id]
     },
     setFilterByStatus(status) {
-      this.filteByStatus = status
+      this.filterByStatus = status
     }
   },
   getters: {
     filteredReminders() {
-      return dlyReminderService.filterByStatus(this.reminderCollection, this.filteByStatus)
+      switch (this.filterByStatus) {
+        case 'all':
+          return this.reminderCollection
+        case 'enabled':
+          return this.enabledReminders
+        case 'disabled':
+          return this.disabledReminders
+        default:
+          console.error(`${this.filterByStatus} is not a valid`)
+          return {}
+      }
+    },
+    enabledReminders() {
+      const filtered = {}
+      for (const reminder of Object.values(this.reminderCollection)) {
+        if (reminder.active) {
+          filtered[reminder.id] = reminder
+        }
+      }
+      return filtered
+    },
+    disabledReminders() {
+      const filtered = {}
+      for (const reminder of Object.values(this.reminderCollection)) {
+        if (!reminder.active) {
+          filtered[reminder.id] = reminder
+        }
+      }
+      return filtered
     }
   }
 })

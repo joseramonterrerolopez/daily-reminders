@@ -25,10 +25,11 @@ import { mapActions, mapState } from 'pinia'
 
 export default {
   mounted() {
+    this.autoClearReminders()
     this.initReminders()
   },
   methods: {
-    ...mapActions(useRemindersStore, ['initReminders']),
+    ...mapActions(useRemindersStore, ['initReminders', 'autoClearReminders']),
     ...mapActions(useCreateReminderFormStore, {
       openCreateReminderForm: 'open'
     })
