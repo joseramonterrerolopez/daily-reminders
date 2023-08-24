@@ -1,0 +1,4 @@
+.textarea-no-resizable textarea,
+textarea.textarea-no-resizable {
+  resize: none !important;
+}
